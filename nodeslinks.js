@@ -368,7 +368,7 @@ function callOthers(){
         for (i=0; i<thisData.length; i++){ 
             for (j=0; j<uniqueMostKeyed.length; j++){ 
                 if (keywords[i].indexOf(uniqueMostKeyed[j])!=-1){
-                links.push({"source":keywords[i],"target":uniqueMostKeyed[j],"sourceTitle":thisData[i].Medium.toLowerCase(), "cites":parseInt(thisData[i].Value), "headline":thisData[i].Title, "authors":thisData[i].Originator}) 
+                links.push({"source":keywords[i],"target":uniqueMostKeyed[j],"sourceTitle":thisData[i].Medium.toLowerCase(), "cites":parseInt(thisData[i].Value), "headline":thisData[i].Title, "authors":thisData[i].Originator, "url":thisData[i].Readings}) 
                 }
             }
         }    
@@ -406,7 +406,7 @@ function simpleNodes(){
        
     // Compute the distinct nodes from the links.
     links.forEach(function(link) {
-      link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, cites:link.cites, sTitle:link.sourceTitle, headline:link.headline, authors:link.authors});
+      link.source = nodes[link.source] || (nodes[link.source] = {name: link.source, cites:link.cites, sTitle:link.sourceTitle, url: link.url, headline:link.headline, authors:link.authors});
       link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
     });
 
@@ -501,6 +501,10 @@ function simpleNodes(){
         })
 
         .on("dblclick", dblclick)
+        .on("click", function(d){
+            var thisLink = d.url;
+            var win = window.open(thisLink, '_blank');
+        })
         .call(drag);
 
     circle
@@ -541,8 +545,8 @@ function simpleNodes(){
     function tick() {
       path.attr("d", linkArc);
       circle
-      .attr("transform", transform);
-      text.attr("transform", transform);
+          .attr("transform", transform);
+          text.attr("transform", transform);
     }
 
     function transform(d) {
