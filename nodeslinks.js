@@ -120,7 +120,7 @@ var keyLabel = vis.selectAll("keylabel")
     .append("text").attr("class","newlabel")
     .attr("x", 34)
     .attr("y", startingYLabel)
-    .text("White Dot: Major Keyword")    
+    .text("White Dot: Major Keyword")     //"source":keywords[i],"target":uniqueMostKeyed[j]
 var paperKeyCircle = vis.selectAll("paperCirc")
     .data(t)
     .enter()
