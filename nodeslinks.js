@@ -136,8 +136,10 @@ var paperLabel = vis.selectAll("keylabel")
     .attr("x", 34)
     .attr("y", startingYLabel-18)
     .text("Colored Dot: Paper") 
-
-loadData("deskResearch.csv", .25)
+//filter num as slider so you can change threshold on demand
+//also have to have date added
+//on change, draw again
+loadData("deskResearch.csv", .3)
 function loadData(csvName, filterNum){
     citeNums.length = 0;
     keywords.length = 0;
@@ -237,6 +239,7 @@ function loadData(csvName, filterNum){
         } //creates a new aray with the sums of all the different Names
     }
     uniqueMostKeyed = focusKeywords.filter( onlyUnique ); //finds unique authors
+
     for (i = 0; i<uniqueMostKeyed.length; i++){
         totalK[i]= keyConsolidation(uniqueMostKeyed[i])
         uniqueKDone=true;   
@@ -368,14 +371,11 @@ function callOthers(){
         for (i=0; i<thisData.length; i++){ 
             for (j=0; j<uniqueMostKeyed.length; j++){ 
                 if (keywords[i].indexOf(uniqueMostKeyed[j])!=-1){
-                links.push({"source":keywords[i],"target":uniqueMostKeyed[j],"sourceTitle":thisData[i].Medium.toLowerCase(), "cites":parseInt(thisData[i].Value), "headline":thisData[i].Title, "authors":thisData[i].Originator, "url":thisData[i].Readings}) 
+                    links.push({"source":keywords[i],"target":uniqueMostKeyed[j],"sourceTitle":thisData[i].Medium.toLowerCase(), "cites":parseInt(thisData[i].Value), "headline":thisData[i].Title, "authors":thisData[i].Originator, "url":thisData[i].Readings}) 
                 }
             }
         }    
         simpleNodes();
-    }
-    if(itsDone==true){
-        makeNewNodes();
     }
     console.log(links.length)
     d3.select("#titlename").classed("selected", true);
@@ -502,8 +502,13 @@ function simpleNodes(){
 
         .on("dblclick", dblclick)
         .on("click", function(d){
-            var thisLink = d.url;
-            var win = window.open(thisLink, '_blank');
+            if (d.name[0].length==1){
+                //do nothing
+                console.log("nada")
+            }else{
+                var thisLink = d.url;
+                var win = window.open(thisLink, '_blank');
+            }
         })
         .call(drag);
 
