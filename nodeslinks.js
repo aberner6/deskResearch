@@ -414,8 +414,8 @@ function simpleNodes(){
         .nodes(d3.values(nodes))
         .links(links)
         .size([w, h])
-        .linkDistance(20)
-        .charge(-200)
+        .linkDistance(30)
+        .charge(-400)
         .on("tick", tick)
         .start();
 
